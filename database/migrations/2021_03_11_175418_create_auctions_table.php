@@ -16,6 +16,7 @@ class CreateAuctionsTable extends Migration
         Schema::create('auctions', function (Blueprint $table) {
             $table->id();
             $table->integer('item_id')->unsigned();
+            $table->integer('category_id');
             $table->integer('sold_to')->unsigned()->nullable();
             $table->timestamp('sold_at')->nullable();
             $table->timestamp('canceled_at')->nullable();

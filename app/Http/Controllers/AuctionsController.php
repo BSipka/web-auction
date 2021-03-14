@@ -6,6 +6,7 @@ use App\Models\Auction;
 use App\Models\Category;
 use App\Models\Item;
 use App\Models\User;
+use App\Models\Offer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -20,18 +21,22 @@ class AuctionsController extends Controller
      */
     public function index()
     {  
-
-     
-        $auctions = Auction::orderBy('created_at','DESC')->get();
+       
+        $auctions = Auction::orderBy('updated_at','DESC')->get();
         $categories = Category::all();
-        
         foreach($auctions as $auction){
           $days =   Carbon\Carbon::parse($auction->created_at)->diffInDays($auction->valid_until);
             if($days>'10' || $days='0'){
                 $find = Auction::find($auction->id);
+                $findOffers = Offer::where('auction_id',$auction->id)->orderBy('created_at','DESC')->get();
+                foreach($findOffers as $finded){
+                    Log::info($finded);
+                    $finded->delete();
+                }
                 $find->delete();
             }
         }
+       
         return view('auctions.index',[ 'auctions'=>$auctions,'categories'=>$categories]);
     }
 
@@ -55,12 +60,14 @@ class AuctionsController extends Controller
     public function store(Request $request)
     {
         $find = Auction::where('item_id',$request->input('item_id'))->get();
-        Log::info($find);
+        
         if($find->isEmpty()){
             $newAuction = Auction::create([
                 'item_id'=>$request->input('item_id'),
+                'category_id'=>$request->input('category_id'),
                 'largest_bid'=>$request->input('starting_price'),
-                ]);
+                 ]);
+
             return redirect()->back()->with('success','You started auction successfully!');
         }
         return redirect()->route('auctions.show')->with('errors','Error on starting the auction!');
@@ -103,22 +110,32 @@ class AuctionsController extends Controller
     {
         $bid = $request->input('largest_bid');
         
-       
         Log::info($bid);
 
         if($bid > $auction->largest_bid && $bid < $auction->item->max_price){
-        $auctionUpdate = Auction::where('id',$auction->id);
-        $userBalance = User::find(Auth::user()->id);
-        $total = $bid - $auction->largest_bid;
-        $userBalance->balance -= $total;
-        $userBalance->save();                
-                                  $auctionUpdate->update([
-                                      'largest_bid' => $bid,
+             $auctionUpdate = Auction::find($auction->id);
+             Log::info($auctionUpdate);
+             $userBalance = User::find(Auth::user()->id);
+             $total = $bid - $auction->largest_bid;
+             $userBalance->balance -= $total;
+             $userBalance->save();                
+                                  
+             $auctionUpdate->update([
+                    'largest_bid' => $bid,
                                   ]);
                             
-        
+            $makeOffer = Offer::create([
+                
+            'user_id'=> Auth::user()->id,    
+            'seller_id'=>$auction->item->seller_id,
+            'item_id'=>$auction->item->id,
+            'auction_id'=>$auction->id,
+            'bid'=>$bid
+              ]);
+
             return redirect()->route('auctions.show',['auction'=>$auction])->with('success','Successfully updated bid!');
-        }                                  
+        }
+        Log::info('Wont save!');                                  
         return back()->withInput();
     }
 
@@ -131,11 +148,28 @@ class AuctionsController extends Controller
     public function destroy(Auction $auction)
     {
         $findAuction = Auction::find($auction->id);
+        $offers = Offer::where('auction_id',$auction->id)->get();
+          
         Log::info($findAuction);
         if($findAuction->delete()){
-            return redirect()->back()->with('error','Auction deactivated.');
+            foreach($offers as $offer){
+                $offer->delete();
+            }
+          return redirect()->back()->with('error','Auction deactivated.');
         }
 
         return back()->withInput()->with('error','Item can`t be deleted.');
+    }
+
+    public function search(Request $request){
+           
+            $category_id= $request->input('category_id');
+           if($category_id != null){
+            $auctions = Auction::where('category_id',$category_id)->orderBy('updated_at','DESC')->get();
+            $categories = Category::all();
+            $cat = Category::find($category_id);
+            return view('auctions.search',['auctions'=>$auctions,'categories'=>$categories,'category_name'=>$cat->category_name]);
+           }
+           return redirect()->route('auctions.index');
     }
 }

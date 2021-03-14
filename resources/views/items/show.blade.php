@@ -6,6 +6,7 @@
     <img src="/{{$item->image}}" alt="" style="width: 200px; height:200px; border:2px solid black">
     <h1 class="display-4 fw-normal">{{$item->name}}</h1>
     <p class="lead fw-normal">{{$item->description}}</p>
+    <p class="lead fw-normal">{{$item->category->category_name}}</p>
     @if($item->auction)
         
             <form id="delete-form" 

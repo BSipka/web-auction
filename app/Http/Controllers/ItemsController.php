@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\Auction;
 use App\Models\Category;
+use App\Models\Offer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -19,8 +20,9 @@ class ItemsController extends Controller
     public function index()
     {
         if(Auth::check()){
-        $items = Item::where('seller_id',Auth::user()->id)->get();
-        
+        $items = Item::where('seller_id',Auth::user()->id)->orderBy('created_at','DESC')->get();
+         
+
         return view('items.index',['items'=>$items]);
         }
 

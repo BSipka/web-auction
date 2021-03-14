@@ -1,19 +1,13 @@
 
 @extends('layouts.app')
 @section('content')
-<div class=" col-md-6 col-lg-6 col-md-offset-3 col-lg-offset-3">
-<div class="panel panel-primary">
-    <div class="panel-heading">
-      <h3 class="panel-title">My Products</h3>
-    <br/>
-      <a class="btn btn-warning pull-right btn-small" href="{{route('items.create')}}">Add new Item</a>
-      <br/>
-    </div>
-    <div class="panel-body">
-      
-        <ul class="list-group">
-          @foreach($items as $item)
-            <li class="list-group-item"><a class="btn btn-primary" href="{{route('items.show',$item->id)}}">{{$item->id}}
+<div class="container">
+  <div class="col-12 p-3">
+      @foreach($items as $item)
+        <ul class="list-group mt-3">
+          
+            <li class="list-group-item"><a class="btn btn-primary" href="{{route('items.show',$item->id)}}">
+                                                   <img src="/{{$item->image}}" style="width: 50px; height:50px;">
                                                    {{$item->name}} 
                                                    {{$item->starting_price}} 
                                                    {{$item->max_price}} 
@@ -32,6 +26,15 @@
                                                            hidden="true"
                                                       />
                                                       <input 
+                                                           id="category_id"
+                                                           value="{{$item->category_id}}"
+                                                           required
+                                                           name="category_id" 
+                                                           spellcheck="false"
+                                                           class="form-control"
+                                                           hidden="true"
+                                                      />
+                                                      <input 
                                                            id="starting_price"
                                                            value="{{$item->starting_price}}"
                                                            required
@@ -45,7 +48,8 @@
                                                   </div>  
                                                   </form> 
                                                   @else
-                                                  <a class="btn btn-danger" onclick="
+                                                  
+                                                  <a class="btn btn-danger ml-3" onclick="
                                           var result = confirm('Sure you want to cancel the auction??');
                                                 if(result){
                                                event.preventDefault();
@@ -61,11 +65,16 @@
                                                 {{ csrf_field() }}
    
                                                   </form> 
+                                                  <a class="btn btn-primary" href="{{route('offers.show',[$item->id])}}">Show bid for this item</a>
                                                   @endif
                                                 </li>
+                                                
           @endforeach
         </ul>
+        <div class="mt-3">
+            <a class="btn btn-primary btn-block" href="{{route('offers.index')}}">List all bids</a>
+            <a class="btn btn-success  btn-block" href="{{route('items.create')}}">Add new Item</a>
+        </div>
     </div>
   </div>
-</div>
   @endsection

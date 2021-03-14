@@ -13,7 +13,7 @@ class Payment extends Model
         
     ];
 
-    public function orders(){
-        return $this->belongsToMany('App\Models\Order');
+    public function items(){
+        return $this->belongsToMany('App\Models\Item');
     }
 }

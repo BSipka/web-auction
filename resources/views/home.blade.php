@@ -50,6 +50,15 @@
                                                            hidden="true"
                                                       />
                                                       <input 
+                                                           id="item_category"
+                                                           value="{{$item->category_id}}"
+                                                           required
+                                                           name="category_id" 
+                                                           spellcheck="false"
+                                                           class="form-control"
+                                                           hidden="true"
+                                                      />
+                                                      <input 
                                                            id="starting_price"
                                                            value="{{$item->starting_price}}"
                                                            required

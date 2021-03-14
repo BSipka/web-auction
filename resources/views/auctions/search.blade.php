@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
  <div class="container">
-      <h3 class="panel-title">All auctions</h3>
+      <h3 class="panel-title">{{$category_name}}</h3>
       <form class="form" method="GET" action="{{route('auctions.search')}}">
         <input type="hidden" name="_method" value="get">
         {{ csrf_field() }}
@@ -22,18 +22,18 @@
     @foreach($auctions as $auction)
       
   
-             <div class="col-12 p-3 ">
+             <div class="col-12 p-3 m-6">
                
             
-              <ul class="list-group mt-3">
-                <li class="list-group-item bg-dark"><img src="/{{$auction->item->image}}" alt="" style="width: 200px; height:200px; border:2px solid black"></li>
+              <ul class="list-group ">
+                <li class="list-group-item bg-dark"> <img src="/{{$auction->item->image}}" alt="" style="width: 200px; height:200px; border:2px solid black"></li>
                 <li class="list-group-item text-success bg-dark display-4 ">Time remaining : {{Carbon\Carbon::now()->diffInDays($auction->valid_until)}} days left!</li>
-                <li class="list-group-item text-light bg-dark">Product name : <span class="text text-warning">{{$auction->item->name}}</span></li>
-                <li class="list-group-item text-light bg-dark">Description : {{$auction->item->description}}</li>
-                <li class="list-group-item text-light bg-dark">Category : {{$auction->item->category->category_name}}</li>
-                <li class="list-group-item text-light bg-dark">Start price : {{$auction->item->starting_price}}</li>
-                <li class="list-group-item text-light bg-dark">Max price : {{$auction->item->max_price}}</li>
-                <li class="list-group-item text-light bg-dark">Seller : {{$auction->item->seller->name}}</li>
+                <li class="list-group-item text-light bg-dark">{{$auction->item->name}}</li>
+                <li class="list-group-item text-light bg-dark">{{$auction->item->description}}</li>
+                <li class="list-group-item text-light bg-dark">{{$auction->item->category->category_name}}</li>
+                <li class="list-group-item text-light bg-dark">{{$auction->item->starting_price}}</li>
+                <li class="list-group-item text-light bg-dark">{{$auction->item->max_price}}</li>
+                <li class="list-group-item text-light bg-dark">{{$auction->item->seller->name}}</li>
                 <li class="list-group-item bg-dark">
                   <h3 class="text text-success"> Current price : {{$auction->largest_bid}} </h3>
                   @if(Auth::check() && Auth::user()->id != $auction->item->seller_id)

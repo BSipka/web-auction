@@ -55,12 +55,8 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#">Balance : {{Auth::user()->balance}} RSD</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('items.index') }}">Sales</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('items.index') }}">Items</a>
-                        </li>
+                        
+                        
                         
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -74,7 +70,9 @@
                                         {{ __('Logout') }}
                                     </a>
                                     <a class="dropdown-item" href="{{route('home')}}">My profile</a>
-
+                                    <a class="dropdown-item" href="{{ route('items.index') }}">Items</a>
+                                    <a class="dropdown-item" href="{{ route('orders.index') }}">Sales</a>
+                                    <a class="dropdown-item" href="{{route('offers.index')}}">Offers</a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
