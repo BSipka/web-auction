@@ -96,11 +96,11 @@ class OffersController extends Controller
 
     public function get_offers(){
         $offer_count = Offer::where('seller_id',Auth::user()->id)->count();
+        $bid_count = Offer::where('user_id',Auth::user()->id)->count();
 
-        $offer = json_encode([
+        return json_encode([
             'offer_count'=>$offer_count,
-        ]);
-
-        return $offer;
+            'bid_count'=>$bid_count
+        ]);    
     }
 }

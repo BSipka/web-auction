@@ -25,9 +25,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        
-        $items = Item::where('seller_id', Auth::user()->id)->get();
-        
-        return view('home',['items'=>$items]);
+        return view('home');
     }
 }

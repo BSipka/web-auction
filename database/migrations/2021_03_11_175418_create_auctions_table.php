@@ -16,15 +16,19 @@ class CreateAuctionsTable extends Migration
         Schema::create('auctions', function (Blueprint $table) {
             $table->id();
             $table->integer('item_id')->unsigned();
-            $table->integer('category_id');
+            $table->foreign('item_id')->references('id')->on('items');
+
+            
             $table->integer('sold_to')->unsigned()->nullable();
+            $table->foreign('sold_to')->references('id')->on('users');
+
             $table->timestamp('sold_at')->nullable();
             $table->timestamp('canceled_at')->nullable();
             $table->timestamp('valid_until')->default(Carbon\Carbon::now()->addDays(10));
             $table->float('largest_bid');
             
-            $table->foreign('item_id')->references('id')->on('items');
-            $table->foreign('sold_to')->references('id')->on('users');
+            
+            
         
             $table->timestamps();
         });

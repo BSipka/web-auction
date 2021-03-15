@@ -25,30 +25,22 @@ class AuctionsController extends Controller
         $auctions = Auction::orderBy('updated_at','DESC')->get();
         $categories = Category::all();
         foreach($auctions as $auction){
-          $days =   Carbon\Carbon::parse($auction->created_at)->diffInDays($auction->valid_until);
-            if($days>'10' || $days='0'){
-                $find = Auction::find($auction->id);
-                $findOffers = Offer::where('auction_id',$auction->id)->orderBy('created_at','DESC')->get();
-                foreach($findOffers as $finded){
-                    Log::info($finded);
-                    $finded->delete();
-                }
-                $find->delete();
+          $days =  Carbon\Carbon::parse($auction->created_at)->diffInDays($auction->valid_until);
+            if($days>10 || $days=0){
+                $findAuction = Auction::find($auction->id);
+                $offers = $findAuction->offers;
+                if($offers){
+                    foreach($offers as $offer)
+                         {
+                           $offer->delete();
+                         }
+                  }
+                $findAuction->delete();
             }
+    
         }
        
         return view('auctions.index',[ 'auctions'=>$auctions,'categories'=>$categories]);
-    }
-
-    
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-    
     }
 
     /**
@@ -64,7 +56,6 @@ class AuctionsController extends Controller
         if($find->isEmpty()){
             $newAuction = Auction::create([
                 'item_id'=>$request->input('item_id'),
-                'category_id'=>$request->input('category_id'),
                 'largest_bid'=>$request->input('starting_price'),
                  ]);
 
@@ -87,17 +78,6 @@ class AuctionsController extends Controller
         return view('auctions.show')->with(['auction'=>$auction]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Auction  $auction
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Auction $auction)
-    {
-        // $auction = Auction::find($auction->id);
-        // return view('auctions.edit',['auction'=>$auction]);
-    }
 
     /**
      * Update the specified resource in storage.
@@ -134,8 +114,7 @@ class AuctionsController extends Controller
               ]);
 
             return redirect()->route('auctions.show',['auction'=>$auction])->with('success','Successfully updated bid!');
-        }
-        Log::info('Wont save!');                                  
+        }                                  
         return back()->withInput();
     }
 
@@ -147,29 +126,33 @@ class AuctionsController extends Controller
      */
     public function destroy(Auction $auction)
     {
+
         $findAuction = Auction::find($auction->id);
-        $offers = Offer::where('auction_id',$auction->id)->get();
-          
-        Log::info($findAuction);
-        if($findAuction->delete()){
+        $offers = $findAuction->offers;
+        if($offers){
             foreach($offers as $offer){
                 $offer->delete();
             }
-          return redirect()->back()->with('error','Auction deactivated.');
         }
-
+        if($findAuction->delete()){
+            return redirect()->back()->with('error','Auction deactivated.');
+        }   
         return back()->withInput()->with('error','Item can`t be deleted.');
     }
 
     public function search(Request $request){
-           
+
             $category_id= $request->input('category_id');
-           if($category_id != null){
-            $auctions = Auction::where('category_id',$category_id)->orderBy('updated_at','DESC')->get();
+            if($category_id != null){
+                 $auctions = Auction::whereHas('item', function($query) use($category_id) {
+                           $query->where('category_id', $category_id);
+                           })->get();
+
             $categories = Category::all();
-            $cat = Category::find($category_id);
+            $cat = $categories->find($category_id);
+             
             return view('auctions.search',['auctions'=>$auctions,'categories'=>$categories,'category_name'=>$cat->category_name]);
-           }
-           return redirect()->route('auctions.index');
+            }
+            return redirect()->route('auctions.index');
     }
 }

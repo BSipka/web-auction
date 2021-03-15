@@ -9,7 +9,6 @@ class Auction extends Model
 {
     protected $fillable=[
         'item_id',
-        'category_id',
         'sold_to',
         'sold_at',
         'canceled_at',
@@ -19,7 +18,7 @@ class Auction extends Model
     public function item(){
         return $this->belongsTo('App\Models\Item');
     }
-   
+    
     public function offers(){
         return $this->hasMany('App\Models\Offer');
     }

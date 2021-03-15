@@ -8,10 +8,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'WebAuction') }}</title>
-
+     
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-
+    
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -72,7 +72,8 @@
                                     <a class="dropdown-item" href="{{route('home')}}">My profile</a>
                                     <a class="dropdown-item" href="{{ route('items.index') }}">Items</a>
                                     <a class="dropdown-item" href="{{ route('orders.index') }}">Sales</a>
-                                    <a class="dropdown-item" href="{{route('offers.index')}}">Offers</a>
+                                    <a  class="dropdown-item" ><notifications-component></notifications-component></a>
+                                   
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
@@ -90,8 +91,10 @@
             @include('partials.success')
             @include('partials.errors')
             @yield('content')
-       
+                   
         </main>
+    
     </div>
+    
 </body>
 </html>
