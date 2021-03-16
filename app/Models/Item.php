@@ -28,5 +28,9 @@ class Item extends Model
     public function seller(){
         return $this->belongsTo('App\Models\User');
     }
+
+    public function order(){
+        return $this->hasOne('App\Models\Order');
+    }
     
 }

@@ -31,8 +31,6 @@ class CreateOrdersTable extends Migration
             $table->integer('payment_id')->unsigned();
             $table->foreign('payment_id')->references('id')->on('payments');
 
-            $table->integer('item_id')->unsigned();
-            $table->foreign('item_id')->references('id')->on('items');
             
             $table->timestamps();
         });

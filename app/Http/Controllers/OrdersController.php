@@ -80,40 +80,19 @@ class OrdersController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        $order = Order::find($order->id);
+        return view('orders.show',['order'=>$order]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Order $order)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Order $order)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Order $order)
     {
-        //
+        $findOrder = Order::find($order->id);
+
+        if($findOrder->delete()){
+            return redirect()->route('orders.index')->with('success','Item was deleted successfully.');
+        }
+
+        return back()->withInput()->with('error','Item can`t be deleted.');
     }
+
 }

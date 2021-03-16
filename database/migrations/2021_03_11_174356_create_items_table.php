@@ -37,6 +37,9 @@ class CreateItemsTable extends Migration
             $table->integer('auction_id')->unsigned()->nullable();
             $table->foreign('auction_id')->references('id')->on('auctions');
 
+            
+
+
             $table->timestamp('deleted_at')->nullable();
 
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
