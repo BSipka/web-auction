@@ -6,10 +6,9 @@
         @foreach($orders as $order)    
         <ul class="list-group  mt-3">
           <li class="list-group-item bg-dark"> <img src="/{{$order->item->image}}" alt="" style="width: 200px; height:200px; border:2px solid black"></li>
-          <li class="list-group-item text-light bg-dark">{{$order->from}}</li>
-          <li class="list-group-item text-light bg-dark">{{$order->to}}</li>
-          <li class="list-group-item text-light bg-dark">{{$order->order_details}}</li>
-          <li class="list-group-item text-light bg-dark">{{$order->created_at}}</li>
+          <li class="list-group-item text-light bg-dark">Name : {{$order->item->name}}</li>
+          <li class="list-group-item text-light bg-dark">About : {{$order->item->description}}</li>
+          <li class="list-group-item text-light bg-dark">Ordered at : {{$order->created_at}}</li>
           <li class="list-group-item text-light bg-dark"><a class="btn btn-primary" href="{{route('orders.show',[$order->id])}}">Show order</a></li>
           <li class="list-group-item text-light bg-dark">
             <a class="btn btn-danger " onclick="

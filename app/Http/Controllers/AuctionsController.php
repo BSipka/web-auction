@@ -138,7 +138,7 @@ class AuctionsController extends Controller
             'seller_id'=>$auction->item->seller_id,
             'item_id'=>$auction->item->id,
             'auction_id'=>$auction->id,
-            'bid'=>$bid
+            'bid'=>$bid-$auction->largest_bid
               ]);
 
             return redirect()->route('auctions.show',['auction'=>$auction])->with('success','Successfully updated bid!');
