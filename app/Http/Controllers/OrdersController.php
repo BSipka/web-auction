@@ -24,6 +24,11 @@ class OrdersController extends Controller
        return view('orders.index',['orders'=>$orders]);
     }
 
+    public function purchases(){
+        $orders = Order::where('to',Auth::user()->id)->orderBy('created_at','DESC')->get();
+       Log::info($orders);
+       return view('orders.index',['orders'=>$orders]);
+    }
     /**
      * Show the form for creating a new resource.
      *
