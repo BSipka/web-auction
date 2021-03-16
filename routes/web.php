@@ -26,7 +26,7 @@ Route::resource('auctions', App\Http\Controllers\AuctionsController::class);
 
 Route::middleware(['auth'])->group(function () {
     
-    Route::get('orders.purchases',[App\Http\Controllers\OrdersController::class,'purchases'])->name('orders.purchases');
+    Route::get('orders.sales',[App\Http\Controllers\OrdersController::class,'sales'])->name('orders.sales');
     Route::get('offers.count',[App\Http\Controllers\OffersController::class,'get_offers'])->name('offers.count');
     Route::get('offers.bids',[App\Http\Controllers\OffersController::class,'get_bids'])->name('offers.bids');
     Route::get('users.details',[App\Http\Controllers\UsersController::class,'index'])->name('users.details');

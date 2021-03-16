@@ -55,8 +55,8 @@
                         
                         <li class="nav-item"><a class="nav-link" href="{{route('home')}}">My profile</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ route('items.index') }}">Items</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('orders.index') }}">Sales</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('orders.purchases') }}">Purchases</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('orders.sales') }}">Sales</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ route('orders.index') }}">Purchases</a></li>
                         <li class="nav-item">  <a class="nav-link" href="#">Balance : {{Auth::user()->balance}} RSD</a></li>
                         
                             <li class="nav-item dropdown">

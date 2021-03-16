@@ -20,13 +20,14 @@ class OrdersController extends Controller
      */
     public function index()
     {
-       $orders = Order::where('seller_id', Auth::user()->id)->orderBy('created_at','DESC')->get();
+        $orders = Order::where('to', Auth::user()->id)->orderBy('created_at','DESC')->get();
        return view('orders.index',['orders'=>$orders]);
+       
     }
 
 
-    public function purchases(){
-        $orders = Order::where('to', Auth::user()->id)->orderBy('created_at','DESC')->get();
+    public function sales(){
+        $orders = Order::where('seller_id', Auth::user()->id)->orderBy('created_at','DESC')->get();
        return view('orders.index',['orders'=>$orders]);
     }
     /**
