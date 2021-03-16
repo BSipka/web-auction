@@ -21,11 +21,8 @@ class ItemsController extends Controller
     {
         if(Auth::check()){
         $items = Item::where('seller_id',Auth::user()->id)->orderBy('created_at','DESC')->get();
-         
-
         return view('items.index',['items'=>$items]);
         }
-
         return view('auth.login');
     }
 
@@ -95,7 +92,6 @@ class ItemsController extends Controller
      */
     public function edit(Item $item)
     {
-        Log::info($item);
         $payments = Payment::all();
         $shippers = Shipper::all();
         $categories = Category::all();
@@ -113,7 +109,7 @@ class ItemsController extends Controller
      */
     public function update(Request $request, Item $item)
     {
-        Log::info($request->input('payment_id'));
+        
         $itemUpdate = Item::where('id',$item->id)
         ->update([
             'name'=>$request->input('name'),

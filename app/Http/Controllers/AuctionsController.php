@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Auction;
 use App\Models\Category;
-use App\Models\Item;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Offer;
@@ -15,6 +14,7 @@ use Carbon;
 
 class AuctionsController extends Controller
 {
+   
     /**
      * Display a listing of the resource.
      *
@@ -26,16 +26,17 @@ class AuctionsController extends Controller
         $category_id = $request->category_id;
         $auctions = Auction::orderBy('updated_at','DESC')->get();
         $categories = Category::all();
+
         foreach($auctions as $auction){
           $days = Carbon\Carbon::now()->diffInDays($auction->created_at);
             if( $days > 10 || $auction->sold_at != null){
                 $findAuction = Auction::find($auction->id);
-                Log::info($findAuction->offers);
+              
                 if($findAuction->offers){
                    $latest =  $findAuction->offers->first();
-                   Log::info($latest);
+                 
                    $item =  $findAuction->item;
-                   Log::info($item);
+    
                    if($latest){
                      Order::create([
                              'from'=>$item->seller_id,
@@ -61,10 +62,9 @@ class AuctionsController extends Controller
         }
         if($category_id != null){
               $auctions = Auction::whereHas('item', function($query) use($category_id) {
-                      $query->where('category_id', $category_id);
-                      })->orderBy('updated_at','DESC')->get();
+                          $query->where('category_id', $category_id);
+                          })->orderBy('updated_at','DESC')->get();
 
-              $categories = Category::all();
               $cat = $categories->find($category_id);
         
               return view('auctions.index')->with(['auctions'=>$auctions,'categories'=>$categories,'category_name'=>$cat->category_name]);

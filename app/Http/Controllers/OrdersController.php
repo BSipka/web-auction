@@ -21,15 +21,12 @@ class OrdersController extends Controller
     public function index()
     {
        $orders = Order::where('seller_id', Auth::user()->id)->orderBy('created_at','DESC')->get();
-    
-       Log::info($orders);
        return view('orders.index',['orders'=>$orders]);
     }
 
 
     public function purchases(){
         $orders = Order::where('to', Auth::user()->id)->orderBy('created_at','DESC')->get();
-       Log::info($orders);
        return view('orders.index',['orders'=>$orders]);
     }
     /**
@@ -40,7 +37,7 @@ class OrdersController extends Controller
     public function create($auction_id)
     {
             
-              $auction = Auction::with('item')->find($auction_id);
+            $auction = Auction::with('item')->find($auction_id);
             $shippers = Shipper::all();
             $payments = Payment::all();
       
@@ -61,7 +58,6 @@ class OrdersController extends Controller
         
         Auction::find($auction_id)->delete();
         
-        
         $newOrder = Order::create([
             'seller_id'=>$auction->item->seller_id,
             'to'=>Auth::user()->id,
@@ -71,7 +67,6 @@ class OrdersController extends Controller
             'item_id'=>$auction->item->id
        ]);
         
-
        if($newOrder){
 
            return redirect()->route('orders.index')->with('success','Ordered successfully!');
@@ -99,7 +94,6 @@ class OrdersController extends Controller
         if($findOrder->delete()){
             return redirect()->route('orders.index')->with('success','Item was deleted successfully.');
         }
-
         return back()->withInput()->with('error','Item can`t be deleted.');
     }
 

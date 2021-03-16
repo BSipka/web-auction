@@ -94,7 +94,6 @@ class UsersController extends Controller
         $id = $user->id;
         $findUser = User::find($id);
         
-
         if($findUser != null){
                 $auctions = Auction::with('item')->whereHas('item', function($query) use($id) {
                 $query->where('seller_id', $id);
