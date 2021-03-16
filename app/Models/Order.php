@@ -35,4 +35,8 @@ class Order extends Model
         return $this->hasOne('App\Models\Shipper');
     }
 
+    public function item(){
+        return $this->hasOne('App\Models\Item');
+    }
+
 }

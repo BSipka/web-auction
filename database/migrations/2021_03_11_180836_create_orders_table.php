@@ -22,6 +22,9 @@ class CreateOrdersTable extends Migration
             $table->integer('to')->unsigned();
             $table->foreign('to')->references('id')->on('users');
 
+            $table->integer('order_details')->unsigned();
+            $table->foreign('order_details')->references('id')->on('orders');
+
             $table->integer('shipper_id')->unsigned();
             $table->foreign('shipper_id')->references('id')->on('shippers');
 

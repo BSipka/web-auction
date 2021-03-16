@@ -1,13 +1,13 @@
 <template>
     <div>
-        <ul>
-            <li>{{this.name}}</li>
-            <li>{{this.email}}</li>
-            <li>{{this.first_name}}</li>
-            <li>{{this.middle_name}}</li>
-            <li>{{this.last_name}}</li>
-            <li>{{this.city}}</li>
-            <li>{{this.balance}}</li>
+        <ul class="list-group  mt-3">
+            <li class="list-group-item text-light bg-dark">{{this.name}}</li>
+            <li class="list-group-item text-light bg-dark">{{this.email}}</li>
+            <li class="list-group-item text-light bg-dark">{{this.first_name}}</li>
+            <li class="list-group-item text-light bg-dark">{{this.middle_name}}</li>
+            <li class="list-group-item text-light bg-dark">{{this.last_name}}</li>
+            <li class="list-group-item text-light bg-dark">{{this.city}}</li>
+            <li class="list-group-item text-light bg-dark">{{this.balance}}</li>
         </ul>
         
     </div>

@@ -1901,6 +1901,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -37563,13 +37564,22 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("a", { attrs: { href: "offers" } }, [
-      _vm._v(" Offers   " + _vm._s(this.offer_count))
-    ]),
+    _c(
+      "a",
+      { staticClass: "btn btn-primary p-2 m-2", attrs: { href: "offers" } },
+      [_vm._v(" Offers   " + _vm._s(this.offer_count))]
+    ),
     _vm._v(" "),
     _c("br"),
     _vm._v(" "),
-    _c("a", [_vm._v(" My Bids   " + _vm._s(this.bid_count) + " ")])
+    _c(
+      "a",
+      {
+        staticClass: "btn btn-primary p-2 m-2",
+        attrs: { href: "offers.bids" }
+      },
+      [_vm._v(" My Bids   " + _vm._s(this.bid_count) + " ")]
+    )
   ])
 }
 var staticRenderFns = []
@@ -37596,20 +37606,34 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("ul", [
-      _c("li", [_vm._v(_vm._s(this.name))]),
+    _c("ul", { staticClass: "list-group  mt-3" }, [
+      _c("li", { staticClass: "list-group-item text-light bg-dark" }, [
+        _vm._v(_vm._s(this.name))
+      ]),
       _vm._v(" "),
-      _c("li", [_vm._v(_vm._s(this.email))]),
+      _c("li", { staticClass: "list-group-item text-light bg-dark" }, [
+        _vm._v(_vm._s(this.email))
+      ]),
       _vm._v(" "),
-      _c("li", [_vm._v(_vm._s(this.first_name))]),
+      _c("li", { staticClass: "list-group-item text-light bg-dark" }, [
+        _vm._v(_vm._s(this.first_name))
+      ]),
       _vm._v(" "),
-      _c("li", [_vm._v(_vm._s(this.middle_name))]),
+      _c("li", { staticClass: "list-group-item text-light bg-dark" }, [
+        _vm._v(_vm._s(this.middle_name))
+      ]),
       _vm._v(" "),
-      _c("li", [_vm._v(_vm._s(this.last_name))]),
+      _c("li", { staticClass: "list-group-item text-light bg-dark" }, [
+        _vm._v(_vm._s(this.last_name))
+      ]),
       _vm._v(" "),
-      _c("li", [_vm._v(_vm._s(this.city))]),
+      _c("li", { staticClass: "list-group-item text-light bg-dark" }, [
+        _vm._v(_vm._s(this.city))
+      ]),
       _vm._v(" "),
-      _c("li", [_vm._v(_vm._s(this.balance))])
+      _c("li", { staticClass: "list-group-item text-light bg-dark" }, [
+        _vm._v(_vm._s(this.balance))
+      ])
     ])
   ])
 }

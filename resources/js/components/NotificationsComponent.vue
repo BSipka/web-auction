@@ -1,8 +1,8 @@
 <template>
     <div>
-       <a href="offers"> Offers   {{this.offer_count}}</a>
+       <a class="btn btn-primary p-2 m-2" href="offers"> Offers   {{this.offer_count}}</a>
          <br>
-        <a> My Bids   {{this.bid_count}} </a>
+        <a class="btn btn-primary p-2 m-2" href="offers.bids"> My Bids   {{this.bid_count}} </a>
     </div>
 </template>
 <script>

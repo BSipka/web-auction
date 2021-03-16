@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
-use App\Models\Auction;
 use App\Models\Category;
-use App\Models\Offer;
+use App\Models\Payment;
+use App\Models\Shipper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -41,7 +41,10 @@ class ItemsController extends Controller
         if(!$category_id){
             $categories = Category::all();
         }
-       return view('items.create',['category_id'=>$category_id,'categories'=>$categories]);
+        $payments = Payment::all();
+        $shippers = Shipper::all();
+
+       return view('items.create',['category_id'=>$category_id,'categories'=>$categories,'payments'=>$payments,'shippers'=>$shippers]);
     }
 
     /**
@@ -55,14 +58,17 @@ class ItemsController extends Controller
         $newItem = Item::create([
             'name'=>$request->input('name'),
             'description'=>$request->input('description'),
+            'image'=>$request->input('image'),
             'starting_price'=>$request->input('starting_price'),
             'max_price'=>$request->input('max_price'),
             'category_id'=>$request->input('category_id'),
+            'payment_id'=>$request->input('payment_id'),
+            'shipper_id'=>$request->input('shipper_id'),
             'seller_id'=>Auth::user()->id
        ]);
 
        if($newItem){
-           return redirect()->route('items.show',['item'=>$newItem->id])->with('success','Item is added successfully!');
+           return redirect()->route('items.index')->with('success','Item is added successfully!');
        }
 
        return redirect()->back()->with('errors','Error on create new item!');
@@ -89,7 +95,13 @@ class ItemsController extends Controller
      */
     public function edit(Item $item)
     {
-        //
+        Log::info($item);
+        $payments = Payment::all();
+        $shippers = Shipper::all();
+        $categories = Category::all();
+
+        $item = Item::find($item->id);
+        return view('items.edit',['item'=>$item,'payments'=>$payments,'shippers'=>$shippers,'categories'=>$categories]);
     }
 
     /**
@@ -101,7 +113,24 @@ class ItemsController extends Controller
      */
     public function update(Request $request, Item $item)
     {
-        //
+        Log::info($request->input('payment_id'));
+        $itemUpdate = Item::where('id',$item->id)
+        ->update([
+            'name'=>$request->input('name'),
+            'description'=>$request->input('description'),
+            'image'=>$request->input('image'),
+            'starting_price'=>$request->input('starting_price'),
+            'max_price'=>$request->input('max_price'),
+            'category_id'=>$request->input('category_id'),
+            'payment_id'=>$request->input('payment_id'),
+            'shipper_id'=>$request->input('shipper_id'),
+        ]);
+  
+        if($itemUpdate)
+        {
+            return redirect()->route('items.show',['item'=>$item->id])->with('success','Successfully updated product!');
+        }                                  
+            return back()->withInput();
     }
 
     /**

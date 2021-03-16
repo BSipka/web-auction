@@ -17,13 +17,10 @@ class OffersController extends Controller
     public function index()
     {
         $offers = Offer::where('seller_id',Auth::user()->id)->orderBy('updated_at','DESC')->get();
-        foreach($offers as $offer){
-            Log::info($offer->item);
-          }
          if($offers){
             return view('offers.index',['offers'=>$offers]);
          }
-            return view('offers.index');
+        return view('offers.index');
     }
 
     /**
@@ -56,7 +53,6 @@ class OffersController extends Controller
     public function show($item_id)
     {
         $offers = Offer::where('item_id',$item_id)->orderBy('created_at','DESC')->get();
-       
         return view('offers.show',['offers'=>$offers]);
     }
 
@@ -91,9 +87,19 @@ class OffersController extends Controller
      */
     public function destroy(Offer $offer)
     {
-        //
+        $findOffer = Offer::find($offer->id);
+
+        if($findOffer->delete()){
+            return redirect()->route('offers.bids')->with('success','Bid was canceled successfully.');
+        }
+
+        return back()->withInput()->with('error','Item can`t be deleted.');
     }
 
+    public function get_bids(){
+        $offers = Offer::where('user_id',Auth::user()->id)->get();
+        return view('offers.bids',['offers'=>$offers]);
+    }
     public function get_offers(){
         $offer_count = Offer::where('seller_id',Auth::user()->id)->count();
         $bid_count = Offer::where('user_id',Auth::user()->id)->count();

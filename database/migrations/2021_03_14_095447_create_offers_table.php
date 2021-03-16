@@ -17,16 +17,16 @@ class CreateOffersTable extends Migration
             $table->id();
 
             $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             
             $table->integer('seller_id')->unsigned();
-            $table->foreign('seller_id')->references('id')->on('users');
+            $table->foreign('seller_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->integer('item_id')->unsigned();
-            $table->foreign('item_id')->references('id')->on('items');
+            $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
 
             $table->integer('auction_id')->unsigned();
-            $table->foreign('auction_id')->references('id')->on('auctions');
+            $table->foreign('auction_id')->references('id')->on('auctions')->onDelete('cascade');
 
             $table->decimal('bid');
 

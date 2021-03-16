@@ -3,14 +3,14 @@
 
 
 
-      <h3 class="panel-title">Add Product</h3>
+      <h3 class="panel-title">Edit Product</h3>
     <br/>
     
     
       
-        <form method="POST" action="{{route('items.store')}}">
+        <form method="POST" action="{{route('items.update',[$item->id])}}">
             {{ csrf_field() }}
-            
+            <input type="hidden" name="_method" value="put">
             <div class="form-group">
                 <label for="name">Name<span class="required">*</span></label>
                 <input placeholder="Enter the name"
@@ -19,6 +19,7 @@
                        name="name" 
                        spellcheck="false"
                        class="form-control"
+                       value="{{$item->name}}"
                    />
             </div>
             <div class="form-group">
@@ -31,6 +32,7 @@
                       spellcheck="false"
                       rows="5"
                       class="form-control autosize-target text-left "
+                      value="{{$item->description}}"
                       >
                       
             </textarea>
@@ -43,6 +45,7 @@
                    name="image" 
                    spellcheck="false"
                    class="form-control"
+                   value="{{$item->image}}"
                />
         </div>
            <div class="form-group">
@@ -53,6 +56,7 @@
                    name="starting_price" 
                    spellcheck="false"
                    class="form-control"
+                   value="{{$item->starting_price}}"
                />
            </div>
 
@@ -64,6 +68,7 @@
                    name="max_price" 
                    spellcheck="false"
                    class="form-control"
+                   value="{{$item->max_price}}"
                />
            </div>
 
@@ -95,7 +100,7 @@
                 </div>
 
            <div class="form-group">
-               <input type="submit" class="btn btn-primary" value="Submit"/>
+               <input type="submit" class="btn btn-primary" value="Update"/>
            </div>
  </form>
    

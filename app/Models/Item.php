@@ -28,4 +28,5 @@ class Item extends Model
     public function seller(){
         return $this->belongsTo('App\Models\User');
     }
+    
 }

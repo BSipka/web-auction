@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Auction;
 use App\Models\Category;
 use App\Models\Item;
+use App\Models\Order;
 use App\Models\User;
 use App\Models\Offer;
 use Illuminate\Http\Request;
@@ -19,19 +20,35 @@ class AuctionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {  
-       
+        
+        $category_id = $request->category_id;
         $auctions = Auction::orderBy('updated_at','DESC')->get();
         $categories = Category::all();
         foreach($auctions as $auction){
-          $days =  Carbon\Carbon::parse($auction->created_at)->diffInDays($auction->valid_until);
-            if($days>10 || $days=0){
+          $days = Carbon\Carbon::now()->diffInDays($auction->created_at);
+            if( $days > 10 || $auction->sold_at != null){
                 $findAuction = Auction::find($auction->id);
+                Log::info($findAuction->offers);
+                if($findAuction->offers){
+                   $latest =  $findAuction->offers->first();
+                   Log::info($latest);
+                   $item =  $findAuction->item;
+                   Log::info($item);
+                     Order::create([
+                             'from'=>$item->seller_id,
+                             'to'=> $latest->user_id,
+                             'shipper_id'=> $item->shipper_id,
+                             'payment_id'=> $item->payment_id,
+                             'item_id'=>$item->id
+                           ]);      
+                }
                 $offers = $findAuction->offers;
                 if($offers){
                     foreach($offers as $offer)
                          {
+                           
                            $offer->delete();
                          }
                   }
@@ -39,6 +56,16 @@ class AuctionsController extends Controller
             }
     
         }
+        if($category_id != null){
+              $auctions = Auction::whereHas('item', function($query) use($category_id) {
+                      $query->where('category_id', $category_id);
+                      })->orderBy('updated_at','DESC')->get();
+
+              $categories = Category::all();
+              $cat = $categories->find($category_id);
+        
+              return view('auctions.index')->with(['auctions'=>$auctions,'categories'=>$categories,'category_name'=>$cat->category_name]);
+       }
        
         return view('auctions.index',[ 'auctions'=>$auctions,'categories'=>$categories]);
     }
@@ -90,11 +117,9 @@ class AuctionsController extends Controller
     {
         $bid = $request->input('largest_bid');
         
-        Log::info($bid);
 
         if($bid > $auction->largest_bid && $bid < $auction->item->max_price){
              $auctionUpdate = Auction::find($auction->id);
-             Log::info($auctionUpdate);
              $userBalance = User::find(Auth::user()->id);
              $total = $bid - $auction->largest_bid;
              $userBalance->balance -= $total;
@@ -140,19 +165,5 @@ class AuctionsController extends Controller
         return back()->withInput()->with('error','Item can`t be deleted.');
     }
 
-    public function search(Request $request){
-
-            $category_id= $request->input('category_id');
-            if($category_id != null){
-                 $auctions = Auction::whereHas('item', function($query) use($category_id) {
-                           $query->where('category_id', $category_id);
-                           })->get();
-
-            $categories = Category::all();
-            $cat = $categories->find($category_id);
-             
-            return view('auctions.search',['auctions'=>$auctions,'categories'=>$categories,'category_name'=>$cat->category_name]);
-            }
-            return redirect()->route('auctions.index');
-    }
+    
 }

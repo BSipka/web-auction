@@ -1,9 +1,9 @@
 @extends('layouts.app')
 @section('content')
-<div>
+
     <ul class="list-group ">
         <li class="list-group-item bg-dark"> <img src="/{{$auction->item->image}}" alt="" style="width: 200px; height:200px; border:2px solid black"></li>
-        <li class="list-group-item text-success bg-dark display-4 ">Time remaining : {{Carbon\Carbon::now()->diffInDays($auction->valid_until)}} days left!</li>
+        <li class="list-group-item text-success bg-dark display-5 ">{{Carbon\Carbon::now()->diffInDays($auction->valid_until)}} days left!</li>
         <li class="list-group-item text-light bg-dark">{{$auction->item->name}}</li>
         <li class="list-group-item text-light bg-dark">{{$auction->item->description}}</li>
         <li class="list-group-item text-light bg-dark">{{$auction->item->category->category_name}}</li>
@@ -35,6 +35,6 @@
         </li>
     </ul>
     
-    
-</div>
+   
+
 @endsection

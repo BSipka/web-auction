@@ -1,8 +1,13 @@
 @extends('layouts.app')
 @section('content')
- <div class="container">
-      <h3 class="panel-title">All auctions</h3>
-      <form class="form" method="GET" action="{{route('auctions.search')}}">
+ 
+@if(isset($category_name)) 
+<h3 class="panel-title"> {{$category_name}}</h3>
+@else 
+<h3 class="panel-title">All auctions</h3>
+ @endif 
+    <div class="position-relative pull-right">
+      <form class="form" method="GET" action="{{route('auctions.index')}}">
         <input type="hidden" name="_method" value="get">
         {{ csrf_field() }}
           <div class="form-group">
@@ -18,7 +23,7 @@
         </select>
         </div> 
     </form>
-   
+  </div>
     @foreach($auctions as $auction)
       
   
@@ -27,7 +32,7 @@
             
               <ul class="list-group mt-3">
                 <li class="list-group-item bg-dark"><img src="/{{$auction->item->image}}" alt="" style="width: 200px; height:200px; border:2px solid black"></li>
-                <li class="list-group-item text-success bg-dark display-4 ">Time remaining : {{Carbon\Carbon::now()->diffInDays($auction->valid_until)}} days left!</li>
+                <li class="list-group-item text-success bg-dark ">{{Carbon\Carbon::now()->diffInDays($auction->valid_until)}} days left!</li>
                 <li class="list-group-item text-light bg-dark">Product name : <span class="text text-warning">{{$auction->item->name}}</span></li>
                 <li class="list-group-item text-light bg-dark">Description : {{$auction->item->description}}</li>
                 <li class="list-group-item text-light bg-dark">Category : {{$auction->item->category->category_name}}</li>
@@ -38,6 +43,7 @@
                   <h3 class="text text-success"> Current price : {{$auction->largest_bid}} </h3>
                   @if(Auth::check() && Auth::user()->id != $auction->item->seller_id)
                          <a class="btn btn-primary btn-block" href="{{route('auctions.show',$auction->id)}}">Bid</a>
+                         <a class="btn btn-success btn-block" href="{{route('orders.create',$auction->id)}}">Buyout</a>
                   @elseif(Auth::check())
                           <a class="btn btn-warning btn-block" href="{{route('items.show',$auction->item_id)}}">Check the product</a>
                           <a class="btn btn-danger btn-block" onclick="
@@ -67,5 +73,5 @@
               @endforeach 
              
             </div>
-          </div>
+         
   @endsection

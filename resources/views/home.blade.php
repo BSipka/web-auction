@@ -12,9 +12,8 @@
                         </div>
                     @endif
                     <div class=" col-md-6 col-lg-6 col-md-offset-3 col-lg-offset-3">
-                        <users-component>
-
-                        </users-component>
+                        <users-component></users-component>
+                        <notifications-component></notifications-component>
                         <a class="btn btn-secondary" href="{{route('users.edit',Auth::user()->id)}}">Edit profile</a>
                         <a class="btn btn-danger" onclick="
           var result = confirm('Are you sure you want to deactivate your profile?');
@@ -22,7 +21,7 @@
             event.preventDefault();
             document.getElementById('delete-form').submit();
           }
-        " href="#" >Delete</a>
+        " href="#" >Delete Account</a>
         <form id="delete-form" 
         action="{{route('users.destroy',[Auth::user()->id])}}"
         method="POST"

@@ -32,7 +32,7 @@ class CreateItemsTable extends Migration
             $table->foreign('payment_id')->references('id')->on('payments');
 
             $table->integer('seller_id')->unsigned();
-            $table->foreign('seller_id')->references('id')->on('users');
+            $table->foreign('seller_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->integer('auction_id')->unsigned()->nullable();
             $table->foreign('auction_id')->references('id')->on('auctions');

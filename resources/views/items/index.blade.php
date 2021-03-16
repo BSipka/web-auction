@@ -1,7 +1,7 @@
 
 @extends('layouts.app')
 @section('content')
-<div class="container">
+
   <div class="col-12 p-3">
       @foreach($items as $item)
         <ul class="list-group mt-3">
@@ -56,7 +56,7 @@
                                                 {{ csrf_field() }}
    
                                                   </form> 
-                                                  <a class="btn btn-primary" href="{{route('offers.show',[$item->id])}}">Show bid for this item</a>
+                                                  <a class="btn btn-primary" href="{{route('offers.show',[$item->id])}}">Show offer for this item</a>
                                                   @endif
                                                 </li>
                                                 
@@ -67,5 +67,5 @@
             <a class="btn btn-success  btn-block" href="{{route('items.create')}}">Add new Item</a>
         </div>
     </div>
-  </div>
+  
   @endsection
