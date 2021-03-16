@@ -9,6 +9,7 @@ use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Carbon;
 class OrdersController extends Controller
 {
@@ -19,13 +20,15 @@ class OrdersController extends Controller
      */
     public function index()
     {
-       $orders = Order::where('from',Auth::user()->id)->orderBy('created_at','DESC')->get();
+       $orders = Order::where('seller_id', Auth::user()->id)->orderBy('created_at','DESC')->get();
+    
        Log::info($orders);
        return view('orders.index',['orders'=>$orders]);
     }
 
+
     public function purchases(){
-        $orders = Order::where('to',Auth::user()->id)->orderBy('created_at','DESC')->get();
+        $orders = Order::where('to', Auth::user()->id)->orderBy('created_at','DESC')->get();
        Log::info($orders);
        return view('orders.index',['orders'=>$orders]);
     }
@@ -60,7 +63,7 @@ class OrdersController extends Controller
         
         
         $newOrder = Order::create([
-            'from'=>$auction->item->seller_id,
+            'seller_id'=>$auction->item->seller_id,
             'to'=>Auth::user()->id,
             'max_price'=>$auction->item->max_price,
             'shipper_id'=>$request->input('shipper_id'),

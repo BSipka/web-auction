@@ -16,8 +16,8 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
 
-            $table->integer('from')->unsigned();
-            $table->foreign('from')->references('id')->on('users');
+            $table->integer('seller_id')->unsigned();
+            $table->foreign('seller_id')->references('id')->on('users');
 
             $table->integer('to')->unsigned();
             $table->foreign('to')->references('id')->on('users');
@@ -30,6 +30,9 @@ class CreateOrdersTable extends Migration
 
             $table->integer('payment_id')->unsigned();
             $table->foreign('payment_id')->references('id')->on('payments');
+
+            $table->integer('item_id')->unsigned();
+            $table->foreign('item_id')->references('id')->on('items');
 
             
             $table->timestamps();
