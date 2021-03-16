@@ -63,7 +63,7 @@
           @endforeach
         </ul>
         <div class="mt-3">
-            <a class="btn btn-primary btn-block" href="{{route('offers.index')}}">List all bids</a>
+            <a class="btn btn-primary btn-block" href="{{route('offers.index')}}">List all offers</a>
             <a class="btn btn-success  btn-block" href="{{route('items.create')}}">Add new Item</a>
         </div>
     </div>
