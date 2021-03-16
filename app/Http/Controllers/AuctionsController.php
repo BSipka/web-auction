@@ -36,13 +36,16 @@ class AuctionsController extends Controller
                    Log::info($latest);
                    $item =  $findAuction->item;
                    Log::info($item);
+                   if($latest){
                      Order::create([
                              'from'=>$item->seller_id,
                              'to'=> $latest->user_id,
                              'shipper_id'=> $item->shipper_id,
                              'payment_id'=> $item->payment_id,
                              'item_id'=>$item->id
-                           ]);      
+                           ]);   
+                     }
+                     break;
                 }
                 $offers = $findAuction->offers;
                 if($offers){

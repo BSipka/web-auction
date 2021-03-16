@@ -36,11 +36,12 @@ class OrdersController extends Controller
      */
     public function create($auction_id)
     {
-       
+            
+              $auction = Auction::with('item')->find($auction_id);
             $shippers = Shipper::all();
             $payments = Payment::all();
       
-       return view('orders.create',['shippers'=>$shippers,'payments'=>$payments,'auction_id'=>$auction_id]);
+       return view('orders.create',['shippers'=>$shippers,'payments'=>$payments,'auction_id'=>$auction_id,'auction'=>$auction]);
     }
 
     /**
@@ -55,11 +56,13 @@ class OrdersController extends Controller
        
         $auction = Auction::with('item')->find($auction_id);
         
-        Log::info($auction);
+        $exists =   Order::where('from',$auction->item->seller_id)->where('to',Auth::user()->id);
         Auction::find($auction_id)->update([
              'sold_to'=>Auth::user()->id,
              'sold_at'=>Carbon\Carbon::now()
         ]);
+        
+        if(!$exists){
         $newOrder = Order::create([
             'from'=>$auction->item->seller_id,
             'to'=>Auth::user()->id,
@@ -68,10 +71,11 @@ class OrdersController extends Controller
             'payment_id'=>$request->input('payment_id'),
             'item_id'=>$auction->item->id
        ]);
+        }
 
-       if($newOrder){
+       if(isset($newOrder)){
 
-           return redirect()->route('orders.index')->with('success','Item is added successfully!');
+           return redirect()->route('orders.index')->with('success','Ordered successfully!');
        }
 
        return redirect()->back()->with('errors','Error on create new item!');
