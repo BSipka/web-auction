@@ -46,7 +46,7 @@ class AuctionsController extends Controller
                              'item_id'=>$item->id
                            ]);   
                      }
-                     break;
+                    
                 }
                 $offers = $findAuction->offers;
                 if($offers){
