@@ -36,8 +36,15 @@ class AuctionsController extends Controller
                    $latest =  $findAuction->offers->first();
                  
                    $item =  $findAuction->item;
-    
-                   if($latest){
+                   $offers = $findAuction->offers;
+                   if($offers){
+                    foreach($offers as $offer)
+                         {
+                           
+                           $offer->delete();
+                         }
+                     }
+                   if($latest && $item){
                      Order::create([
                              'seller_id'=>$item->seller_id,
                              'to'=> $latest->user_id,
@@ -48,14 +55,7 @@ class AuctionsController extends Controller
                      }
                     
                 }
-                $offers = $findAuction->offers;
-                if($offers){
-                    foreach($offers as $offer)
-                         {
-                           
-                           $offer->delete();
-                         }
-                  }
+                
                 $findAuction->delete();
             }
     
