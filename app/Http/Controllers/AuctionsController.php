@@ -39,7 +39,7 @@ class AuctionsController extends Controller
     
                    if($latest){
                      Order::create([
-                             'from'=>$item->seller_id,
+                             'seller_id'=>$item->seller_id,
                              'to'=> $latest->user_id,
                              'shipper_id'=> $item->shipper_id,
                              'payment_id'=> $item->payment_id,
